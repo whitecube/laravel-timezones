@@ -95,7 +95,7 @@ $date = Timezone::store(new Carbon('2023-01-01 00:00:00', 'Europe/Brussels'));
 $date = (new Carbon('2023-01-01 00:00:00', 'Europe/Brussels'))->setTimezone(Timezone::storage());
 ```
 
-## Assigning values to casted attributes
+## Assigning values to cast attributes
 
 Many developers are used to assign Carbon instances to date attributes:
 
