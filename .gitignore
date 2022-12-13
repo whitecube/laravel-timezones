@@ -1,0 +1,8 @@
+/vendor
+.idea
+.DS_Store
+Thumbs.db
+composer.lock
+.phpunit.result.cache
+.swp
+*.map

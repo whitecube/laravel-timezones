@@ -1,0 +1,50 @@
+{
+    "name": "whitecube/laravel-prices",
+    "description": "Store UTC dates in the database and work with custom timezones in the application.",
+    "keywords": [
+        "whitecube",
+        "laravel",
+        "utc",
+        "local",
+        "time",
+        "conversion"
+    ],
+    "authors": [
+        {
+            "name": "Whitecube",
+            "email": "hello@whitecube.be"
+        },
+        {
+            "name": "Toon Van den Bos",
+            "email": "toon@whitecube.be"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "laravel/framework": "^9",
+        "nesbot/carbon": "^2.64"
+    },
+    "autoload": {
+        "psr-4": {
+            "Whitecube\\LaravelTimezones\\": "src/",
+            "Whitecube\\LaravelTimezones\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Whitecube\\LaravelTimezones\\ServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.22"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
