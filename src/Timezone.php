@@ -3,6 +3,7 @@
 namespace Whitecube\LaravelTimezones;
 
 use Carbon\CarbonTimeZone;
+use Carbon\CarbonInterface;
 
 class Timezone
 {
@@ -63,6 +64,16 @@ class Timezone
     public function getStorage(): CarbonTimeZone
     {
         return $this->storage;
+    }
+
+    public function convertToCurrent(CarbonInterface $date): CarbonInterface
+    {
+        return $date->copy()->setTimezone($this->getCurrent());
+    }
+
+    public function convertToStorage(CarbonInterface $date): CarbonInterface
+    {
+        return $date->copy()->setTimezone($this->getStorage());
     }
 
     protected function makeTimezone($value): CarbonTimeZone
