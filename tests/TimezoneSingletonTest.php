@@ -9,39 +9,51 @@ use Whitecube\LaravelTimezones\Timezone;
 it('can create a default Timezone instance and access its current & storage settings', function() {
     $instance = new Timezone('Europe/Brussels');
 
-    expect($instance->getCurrent())->toBeInstanceOf(CarbonTimeZone::class);
-    expect($instance->getStorage())->toBeInstanceOf(CarbonTimeZone::class);
+    expect($instance->current())->toBeInstanceOf(CarbonTimeZone::class);
+    expect($instance->storage())->toBeInstanceOf(CarbonTimeZone::class);
 });
 
-it('can convert date with defined timezone to current & storage timezones', function() {
+it('can set the application timezone', function() {
     $instance = new Timezone('UTC');
-    $instance->setCurrent('Europe/Brussels');
 
-    $date = new Carbon(null, 'Asia/Phnom_Penh');
+    expect($instance->current()->getName())->toBe('UTC');
 
-    expect($instance->convertToStorage($date)->getTimezone()->getName() ?? null)->toBe('UTC');
-    expect($instance->convertToCurrent($date)->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
-    expect($date->getTimezone()->getName() ?? null)->toBe('Asia/Phnom_Penh');
+    $instance->set('Europe/Brussels');
+
+    expect($instance->current()->getName())->toBe('Europe/Brussels');
+
+    $instance->setCurrent('Europe/Paris');
+
+    expect($instance->current()->getName())->toBe('Europe/Paris');
 });
 
-it('can convert date with unset timezone to current & storage timezones', function() {
+it('can set the database timezone', function() {
     $instance = new Timezone('UTC');
-    $instance->setCurrent('Europe/Brussels');
 
-    $date = new Carbon();
+    expect($instance->storage()->getName())->toBe('UTC');
 
-    expect($instance->convertToStorage($date)->getTimezone()->getName() ?? null)->toBe('UTC');
-    expect($instance->convertToCurrent($date)->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
-    expect($date->getTimezone()->getName() ?? null)->toBe(date_default_timezone_get());
+    $instance->setStorage('Europe/Brussels');
+    
+    expect($instance->storage()->getName())->toBe('Europe/Brussels');
 });
 
-it('can create date with current timezone', function() {
+it('can get the current date using the application\'s timezone', function() {
     $instance = new Timezone('UTC');
-    $instance->setCurrent('Europe/Brussels');
+    $instance->set('Europe/Brussels');
 
-    $string = $instance->makeDateWithCurrent('1993-03-16 03:00:00');
-    $date = $instance->makeDateWithCurrent(new Carbon('1993-03-16 03:00:00', 'UTC'));
-    $custom = $instance->makeDateWithCurrent('1993-03-16 03:00:00', fn($value, $tz) => new CarbonImmutable($value, $tz));
+    $date = $instance->now();
+
+    expect($date)->toBeInstanceOf(CarbonInterface::class);
+    expect($date->getTimezone()->getName())->toBe('Europe/Brussels');
+});
+
+it('can create or convert a date using the application\'s current timezone', function() {
+    $instance = new Timezone('UTC');
+    $instance->set('Europe/Brussels');
+
+    $string = $instance->date('1993-03-16 03:00:00');
+    $date = $instance->date(new Carbon('1993-03-16 03:00:00', 'UTC'));
+    $custom = $instance->date('1993-03-16 03:00:00', fn($value, $tz) => new CarbonImmutable($value, $tz));
 
     expect($string)->toBeInstanceOf(CarbonInterface::class);
     expect($string->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
@@ -51,13 +63,14 @@ it('can create date with current timezone', function() {
     expect($custom->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
 });
 
-it('can create date with storage timezone', function() {
+
+it('can create or convert a date using the database\'s storage timezone', function() {
     $instance = new Timezone('UTC');
     $instance->setCurrent('Europe/Brussels');
 
-    $string = $instance->makeDateWithStorage('1993-03-16 03:00:00');
-    $date = $instance->makeDateWithStorage(new Carbon('1993-03-16 03:00:00', 'Europe/Brussels'));
-    $custom = $instance->makeDateWithStorage('1993-03-16 03:00:00', fn($value, $tz) => new CarbonImmutable($value, $tz));
+    $string = $instance->store('1993-03-16 03:00:00');
+    $date = $instance->store(new Carbon('1993-03-16 03:00:00', 'Europe/Brussels'));
+    $custom = $instance->store('1993-03-16 03:00:00', fn($value, $tz) => new CarbonImmutable($value, $tz));
 
     expect($string)->toBeInstanceOf(CarbonInterface::class);
     expect($string->getTimezone()->getName() ?? null)->toBe('UTC');

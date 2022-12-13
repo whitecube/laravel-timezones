@@ -14,7 +14,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Timezone::class, function ($app) {
+        $this->app->singleton('timezone', function ($app) {
             return new Timezone(config('app.timezone'));
         });
     }

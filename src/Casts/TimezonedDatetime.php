@@ -2,8 +2,8 @@
 
 namespace Whitecube\LaravelTimezones\Casts;
 
-use Whitecube\LaravelTimezones\Timezone;
 use Illuminate\Support\Facades\Date;
+use Whitecube\LaravelTimezones\Facades\Timezone;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class TimezonedDatetime implements CastsAttributes

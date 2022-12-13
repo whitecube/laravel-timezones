@@ -30,11 +30,11 @@ protected $casts = [
 ];
 ```
 
-In other scenarios, use the `Timezone`'s static methods directly for conversion:
+In other scenarios, use the `Timezone` Facade directly for conversion:
 
 ```php
 use Carbon\Carbon;
-use Whitecube\LaravelTimezones\Timezone;
+use Whitecube\LaravelTimezones\Facades\Timezone;
 
 // Get the current date configured with the current timezone:
 $now = Timezone::now();
