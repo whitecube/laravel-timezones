@@ -1,5 +1,5 @@
 {
-    "name": "whitecube/laravel-prices",
+    "name": "whitecube/laravel-timezones",
     "description": "Store UTC dates in the database and work with custom timezones in the application.",
     "keywords": [
         "whitecube",
