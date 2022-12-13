@@ -94,6 +94,35 @@ $date = Timezone::store(new Carbon('2023-01-01 00:00:00', 'Europe/Brussels'));
 // Alternatively, set the storage timezone yourself:
 $date = (new Carbon('2023-01-01 00:00:00', 'Europe/Brussels'))->setTimezone(Timezone::storage());
 ```
+
+## Assigning values to casted attributes
+
+Many developers are used to assign Carbon instances to date attributes:
+
+```php
+$model->published_at = Carbon::create($request->published_at);
+```
+
+**This can lead to unexpected behavior** because the assigned Carbon instance will default to the `UTC` timezone, wheras the provided value was probably meant for another timezone. The datetime string will be stored as-is without shifting its timezone accordingly first. 
+
+In order to prevent this, it is recommended to let the Cast do the heavy lifting:
+
+```php
+$model->published_at = $request->published_at;
+```
+
+The package will now treat the provided datetime string using the correct Timezone (for instance, `Europe/Brussels`) and store the shifted `UTC` value in the database correctly.
+
+A more verbose (but also correct) method would be to create the Carbon instance using the `Timezone` facade :
+
+```php
+$model->published_at = Carbon::create($request->published_at, Timezone::current());
+// Or, shorthand:
+$model->published_at = Timezone::date($request->published_at);
+```
+
+**This is not a bug**, it is intended behavior since one should be fully aware of the Carbon instance's timezone before assigning it.
+
 ## 🔥 Sponsorships 
 
 If you are reliant on this package in your production applications, consider [sponsoring us](https://github.com/sponsors/whitecube)! It is the best way to help us keep doing what we love to do: making great open source software.
