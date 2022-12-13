@@ -8,6 +8,6 @@ class Timezone extends Facade
 {
     public static function getFacadeAccessor()
     {
-        return 'timezone';
+        return \Whitecube\LaravelTimezones\Timezone::class;
     }
 }

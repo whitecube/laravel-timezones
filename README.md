@@ -1,36 +1,75 @@
 # Laravel Timezones
 
+Dealing with timezones can be a frustrating experience. Here's an attempt to brighten your day.
+
+**The problem:** it is commonly agreed that dates should be stored as `UTC` datetimes in the database, which generally means they also need to be adapted for the local timezone before manipulation or display. Laravel provides a `app.timezone` configuration, making it possible to start working with timezones. However, changing that configuration will affect both the stored and manipulated date's timezones. This package tries to address this by providing a timezone conversion mechanism that should perform most of the repetitive timezone configurations out of the box.
+
 ## Getting started
 
-All database dates should be stored using the `app.timezone` config setting. We highly suggest keeping it as `UTC` since it's a global standard for dates storage.
+The `app.timezone` configuration setting has to be set to the timezone that should be used when saving dates in the database. We highly recommend keeping it as `UTC` since it's a global standard for dates storage.
 
-For in-app date manipulation and display, you can define the timezone all dates should cast to using one of the following methods. Depending on you app's context, choose the one that best suits your situation.
+For in-app date manipulation and display, one would expect more flexibility. That's why it is possible to set the application's timezone dynamically by updating the `timezone` singleton instance. Depending on the app's context, please choose one that suits your situation best:
 
 ### 1. Using middleware
 
 Useful when the app's timezone should be set by ther user's settings.
 
+```php
+namespace App\Http\Middleware;
+ 
+use Closure;
+use Whitecube\LaravelTimezones\Facades\Timezone;
+ 
+class DefineApplicationTimezone
+{
+    public function handle($request, Closure $next)
+    {
+        Timezone::set($request->user()->timezone ?? 'Europe/Brussels');
+ 
+        return $next($request);
+    }
+}
+```
+
 ### 2. Using a Service Provider
 
-Useful when the app's timezone should be set by the application itself.
+Useful when the app's timezone should be set by the application itself. For instance, in `App\Providers\AppServiceProvider`:
+
+```php
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Whitecube\LaravelTimezones\Facades\Timezone;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        Timezone::set('America/Toronto');
+    }
+}
+```
 
 ## Usage
 
 Once everything's setup, the easiest way to manipulate dates configured with the app's current timezone is to use the `TimezonedDatetime` or `ImmutableTimezonedDatetime` cast types on your models:
 
 ```php
+use Whitecube\LaravelTimezones\Casts\TimezonedDatetime;
+use Whitecube\LaravelTimezones\Casts\ImmutableTimezonedDatetime;
+
 /**
  * The attributes that should be cast.
  *
  * @var array
  */
 protected $casts = [
-    'published_at' => \Whitecube\LaravelTimezones\Casts\TimezonedDatetime::class,
-    'birthday' => \Whitecube\LaravelTimezones\Casts\ImmutableTimezonedDatetime::class . ':Y-m-d',
+    'published_at' => TimezonedDatetime::class,
+    'birthday' => ImmutableTimezonedDatetime::class . ':Y-m-d',
 ];
 ```
 
-In other scenarios, use the `Timezone` Facade directly for conversion:
+In other scenarios, feel free to use the `Timezone` Facade directly for more convenience:
 
 ```php
 use Carbon\Carbon;
