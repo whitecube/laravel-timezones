@@ -4,6 +4,24 @@ Dealing with timezones can be a frustrating experience. Here's an attempt to bri
 
 **The problem:** it is commonly agreed that dates should be stored as `UTC` datetimes in the database, which generally means they also need to be adapted for the local timezone before manipulation or display. Laravel provides a `app.timezone` configuration, making it possible to start working with timezones. However, changing that configuration will affect both the stored and manipulated date's timezones. This package tries to address this by providing a timezone conversion mechanism that should perform most of the repetitive timezone configurations out of the box.
 
+```php
+// Model:
+protected $casts = [
+    'occurred_at' => TimezonedDatetime::class,
+];
+
+// Set a custom timezone
+Timezone::set('Europe/Brussels');
+
+// Display dates stored as UTC in the app's timezone:
+// (database value: 2022-12-13 09:00:00)
+echo $model->occurred_at->format('d.m.Y H:i'); // Output: 13.12.2022 10:00
+
+// Store dates using automatic UTC conversion:
+$model->occurred_at = '2022-12-13 20:00:00';
+$model->save(); // Database value: 2022-12-13 19:00:00
+```
+
 ## Getting started
 
 The `app.timezone` configuration setting has to be set to the timezone that should be used when saving dates in the database. We highly recommend keeping it as `UTC` since it's a global standard for dates storage.
