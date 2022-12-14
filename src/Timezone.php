@@ -107,9 +107,7 @@ class Timezone
      */
     public function date($value, callable $maker = null): CarbonInterface
     {
-        return $this->convertToCurrent(
-            $this->makeDateWithStorage($value, $maker)
-        );
+        return $this->makeDateWithCurrent($value, $maker);
     }
 
     /**
@@ -121,9 +119,7 @@ class Timezone
      */
     public function store($value, callable $maker = null): CarbonInterface
     {
-        return $this->convertToStorage(
-            $this->makeDateWithCurrent($value, $maker)
-        );
+        return $this->makeDateWithStorage($value, $maker);
     }
 
     /**
