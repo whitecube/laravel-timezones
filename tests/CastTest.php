@@ -28,6 +28,30 @@ it('can access UTC database date with application timezone and specific format',
     expect($output->format('Y-m-d H:i:s'))->toBe('2022-12-15 10:00:00');
 });
 
+it('can access NULL date as NULL', function() {
+    setupFacade();
+
+    $cast = new TimezonedDatetime();
+
+    $input = null;
+
+    $output = $cast->get(fakeModel(), 'id', $input, []);
+
+    expect($output)->toBeNull();
+});
+
+it('can access empty string as NULL', function() {
+    setupFacade();
+
+    $cast = new TimezonedDatetime();
+
+    $input = '';
+
+    $output = $cast->get(fakeModel(), 'id', $input, []);
+
+    expect($output)->toBeNull();
+});
+
 it('can mutate application timezone datetime string to UTC database date string', function() {
     setupFacade();
 
@@ -74,4 +98,28 @@ it('can mutate date instance with exotic timezone to UTC database date string', 
     $output = $cast->set(fakeModel(), 'id', $input, []);
 
     expect($output)->toBe('2022-12-15 09:00:00');
+});
+
+it('can mutate NULL as NULL', function() {
+    setupFacade();
+
+    $cast = new TimezonedDatetime();
+
+    $input = null;
+
+    $output = $cast->set(fakeModel(), 'id', $input, []);
+
+    expect($output)->toBeNull();
+});
+
+it('can mutate empty string as NULL', function() {
+    setupFacade();
+
+    $cast = new TimezonedDatetime();
+
+    $input = '';
+
+    $output = $cast->set(fakeModel(), 'id', $input, []);
+
+    expect($output)->toBeNull();
 });
