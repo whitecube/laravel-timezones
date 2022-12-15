@@ -37,7 +37,9 @@ class TimezonedDatetime implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return Timezone::date($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
+        $original = Timezone::store($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
+
+        return Timezone::date($original);
     }
  
     /**
@@ -51,8 +53,9 @@ class TimezonedDatetime implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        return Timezone::store($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model))
-            ->format($this->format ?? $model->getDateFormat());
+        $requested = Timezone::date($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
+
+        return Timezone::store($requested)->format($this->format ?? $model->getDateFormat());
     }
  
     /**

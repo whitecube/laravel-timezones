@@ -52,15 +52,18 @@ it('can create or convert a date using the application\'s current timezone', fun
     $instance->set('Europe/Brussels');
 
     $string = $instance->date('1993-03-16 03:00:00');
-    $date = $instance->date(new Carbon('1993-03-16 03:00:00', 'UTC'));
+    $date = $instance->date(new Carbon('1993-03-16 02:00:00', 'UTC'));
     $custom = $instance->date('1993-03-16 03:00:00', fn($value, $tz) => new CarbonImmutable($value, $tz));
 
     expect($string)->toBeInstanceOf(CarbonInterface::class);
     expect($string->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
+    expect($string->format('Y-m-d H:i:s'))->toBe('1993-03-16 03:00:00');
     expect($date)->toBeInstanceOf(CarbonInterface::class);
     expect($date->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
+    expect($date->format('Y-m-d H:i:s'))->toBe('1993-03-16 03:00:00');
     expect($custom)->toBeInstanceOf(CarbonImmutable::class);
     expect($custom->getTimezone()->getName() ?? null)->toBe('Europe/Brussels');
+    expect($custom->format('Y-m-d H:i:s'))->toBe('1993-03-16 03:00:00');
 });
 
 
@@ -69,14 +72,17 @@ it('can create or convert a date using the database\'s storage timezone', functi
     $instance->setCurrent('Europe/Brussels');
 
     $string = $instance->store('1993-03-16 03:00:00');
-    $date = $instance->store(new Carbon('1993-03-16 03:00:00', 'Europe/Brussels'));
+    $date = $instance->store(new Carbon('1993-03-16 04:00:00', 'Europe/Brussels'));
     $custom = $instance->store('1993-03-16 03:00:00', fn($value, $tz) => new CarbonImmutable($value, $tz));
 
     expect($string)->toBeInstanceOf(CarbonInterface::class);
     expect($string->getTimezone()->getName() ?? null)->toBe('UTC');
+    expect($string->format('Y-m-d H:i:s'))->toBe('1993-03-16 03:00:00');
     expect($date)->toBeInstanceOf(CarbonInterface::class);
     expect($date->getTimezone()->getName() ?? null)->toBe('UTC');
+    expect($date->format('Y-m-d H:i:s'))->toBe('1993-03-16 03:00:00');
     expect($custom)->toBeInstanceOf(CarbonImmutable::class);
     expect($custom->getTimezone()->getName() ?? null)->toBe('UTC');
+    expect($custom->format('Y-m-d H:i:s'))->toBe('1993-03-16 03:00:00');
 });
 

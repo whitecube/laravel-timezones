@@ -1,5 +1,9 @@
 <?php
 
+use Whitecube\LaravelTimezones\Timezone;
+use Whitecube\LaravelTimezones\Facades\Timezone as Facade;
+use Illuminate\Database\Eloquent\Model;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -39,7 +43,20 @@
 |
 */
 
-// function something()
-// {
-//     // ..
-// }
+function setupFacade(string $storage = 'UTC', string $current = 'Europe/Brussels')
+{
+    $instance = new Timezone($storage);
+    $instance->set($current);
+
+    Facade::swap($instance);
+}
+
+function fakeModel()
+{
+    return new class() extends Model {
+        public function getDateFormat()
+        {
+            return 'Y-m-d H:i:s';
+        }
+    };
+}
