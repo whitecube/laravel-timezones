@@ -15,6 +15,10 @@ class ImmutableTimezonedDatetime extends TimezonedDatetime
      */
     public function get($model, $key, $value, $attributes)
     {
-        return parent::get($model, $key, $value, $attributes)->toImmutable();
+        if($date = parent::get($model, $key, $value, $attributes)) {
+            return $date->toImmutable();
+        }
+
+        return $date;
     }
 }
