@@ -121,7 +121,7 @@ Many developers are used to assign Carbon instances to date attributes:
 $model->published_at = Carbon::create($request->published_at);
 ```
 
-**This can lead to unexpected behavior** because the assigned Carbon instance will default to the `UTC` timezone, wheras the provided value was probably meant for another timezone. The datetime string will be stored as-is without shifting its timezone accordingly first. 
+**This can lead to unexpected behavior** because the assigned Carbon instance will default to the `UTC` timezone, whereas the provided value was probably meant for another timezone. The datetime string will be stored as-is without shifting its timezone accordingly first. 
 
 In order to prevent this, it is recommended to let the Cast do the heavy lifting:
 
