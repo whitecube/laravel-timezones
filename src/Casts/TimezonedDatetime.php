@@ -37,7 +37,7 @@ class TimezonedDatetime implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        if(! $value) {
+        if(!$value && $value !== 0) {
             return null;
         }
         
@@ -57,7 +57,7 @@ class TimezonedDatetime implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        if(! $value) {
+        if(!$value && $value !== 0) {
             return null;
         }
 

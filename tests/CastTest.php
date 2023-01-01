@@ -123,3 +123,19 @@ it('can mutate empty string as NULL', function() {
 
     expect($output)->toBeNull();
 });
+
+
+it('can mutate 0 values', function() {
+    // 4 hours difference between dubai and UTC
+    setupFacade(current: 'Asia/Dubai');
+    
+    $cast = new TimezonedDatetime('H');
+
+    $input = 0;
+    
+    $output = $cast->set(fakeModel(), 'id', $input, []);
+    expect($output)->toEqual(20);
+
+    $output = $cast->get(fakeModel(), 'id', $input, []);
+    expect($output->format('H'))->toEqual(4);
+});
