@@ -22,6 +22,12 @@ $model->occurred_at = '2022-12-13 20:00:00';
 $model->save(); // Database value: 2022-12-13 19:00:00
 ```
 
+## Installation
+
+```bash
+composer require whitecube/laravel-timezones
+```
+
 ## Getting started
 
 The `app.timezone` configuration setting has to be set to the timezone that should be used when saving dates in the database. We highly recommend keeping it as `UTC` since it's a global standard for dates storage.
