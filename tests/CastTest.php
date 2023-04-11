@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Whitecube\LaravelTimezones\Casts\TimezonedDatetime;
 
 it('can access UTC database date with application timezone', function() {
@@ -138,4 +140,24 @@ it('can mutate 0 values', function() {
 
     $output = $cast->get(fakeModel(), 'id', $input, []);
     expect($output->format('H'))->toEqual(4);
+});
+
+test('a model with a timezone date cast can be json serialized', function () {
+    setupFacade();
+
+    Config::shouldReceive('get')
+        ->with('app.timezone')
+        ->andReturn('UTC');
+
+    $date = new Carbon('2022-12-15 09:00:00', 'UTC');
+    $model = fakeModelWithCast();
+
+    $model->test_at = $date;
+    $model->updated_at = $date;
+
+    expect($model->jsonSerialize())
+        ->toBe([
+            'test_at' => $date->toJSON(),
+            'updated_at' => $date->toJSON()
+        ]);
 });
