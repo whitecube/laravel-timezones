@@ -5,6 +5,9 @@ namespace Whitecube\LaravelTimezones\Casts;
 use Illuminate\Support\Facades\Date;
 use Whitecube\LaravelTimezones\Facades\Timezone;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 class TimezonedDatetime implements CastsAttributes
 {
@@ -40,6 +43,10 @@ class TimezonedDatetime implements CastsAttributes
         if(!$value && $value !== 0) {
             return null;
         }
+
+        if ($this->isTimestamp($model, $key)) {
+            $value = Carbon::parse($value)->format($this->format ?? $model->getDateFormat());
+        }
         
         $original = Timezone::store($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
 
@@ -61,9 +68,24 @@ class TimezonedDatetime implements CastsAttributes
             return null;
         }
 
+        if ($this->isTimestamp($model, $key) && is_string($value)) {
+            $value = Carbon::parse($value, Config::get('app.timezone'));
+        }
+
         $requested = Timezone::date($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
 
         return Timezone::store($requested)->format($this->format ?? $model->getDateFormat());
+    }
+
+    /**
+     * Check if the given key is part of the model's known timestamps
+     * @param Model $model 
+     * @param string $key 
+     * @return bool 
+     */
+    protected function isTimestamp(Model $model, string $key): bool
+    {
+        return $model->usesTimestamps() && in_array($key, $model->getDates());
     }
  
     /**

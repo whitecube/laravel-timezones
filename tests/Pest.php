@@ -3,6 +3,7 @@
 use Whitecube\LaravelTimezones\Timezone;
 use Whitecube\LaravelTimezones\Facades\Timezone as Facade;
 use Illuminate\Database\Eloquent\Model;
+use Whitecube\LaravelTimezones\Casts\TimezonedDatetime;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,22 @@ function setupFacade(string $storage = 'UTC', string $current = 'Europe/Brussels
 function fakeModel()
 {
     return new class() extends Model {
+        public function getDateFormat()
+        {
+            return 'Y-m-d H:i:s';
+        }
+    };
+}
+
+function fakeModelWithCast()
+{
+    return new class() extends Model {
+        protected $casts = [
+            'test_at' => TimezonedDatetime::class,
+            'created_at' => TimezonedDatetime::class,
+            'updated_at' => TimezonedDatetime::class,
+        ];
+
         public function getDateFormat()
         {
             return 'Y-m-d H:i:s';
