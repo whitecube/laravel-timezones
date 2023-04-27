@@ -2,12 +2,14 @@
 
 namespace Whitecube\LaravelTimezones\Casts;
 
-use Illuminate\Support\Facades\Date;
 use Whitecube\LaravelTimezones\Facades\Timezone;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use DateTime;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
+use Whitecube\LaravelTimezones\DatetimeParser;
 
 class TimezonedDatetime implements CastsAttributes
 {
@@ -98,10 +100,19 @@ class TimezonedDatetime implements CastsAttributes
      */
     public function asDateTime($value, $timezone, $model)
     {
-        return Date::createFromFormat(
-            $this->format ?? $model->getDateFormat(),
-            $value,
-            $timezone,
-        );
+        $date = (new DatetimeParser)->parse($value, $this->format ?? $model->getDateFormat());
+
+        if ($this->hasTimezone($value)) {
+            return $date->setTimezone($timezone);
+        }
+
+        return $date->shiftTimezone($timezone);
     }
+
+    protected function hasTimezone($value): bool
+    {
+        return (is_string($value) && array_key_exists('zone', date_parse($value)))
+            || (is_a($value, DateTime::class) && $value->getTimezone());
+    }
+
 }
