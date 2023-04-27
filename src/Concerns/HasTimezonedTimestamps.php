@@ -21,8 +21,11 @@ trait HasTimezonedTimestamps
 
     /**
      * Check if key is a timezoned datetime cast
+     * 
+     * @param string $key 
+     * @return bool 
      */
-    protected function hasTimezonedDatetimeCast($key)
+    protected function hasTimezonedDatetimeCast(string $key): bool
     {
         $casts = $this->getCasts();
 

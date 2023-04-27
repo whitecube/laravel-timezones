@@ -5,7 +5,6 @@ namespace Whitecube\LaravelTimezones\Casts;
 use Whitecube\LaravelTimezones\Facades\Timezone;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Carbon\Carbon;
-use Carbon\CarbonInterface;
 use DateTime;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
@@ -81,6 +80,7 @@ class TimezonedDatetime implements CastsAttributes
 
     /**
      * Check if the given key is part of the model's known timestamps
+     * 
      * @param Model $model 
      * @param string $key 
      * @return bool 
@@ -109,7 +109,13 @@ class TimezonedDatetime implements CastsAttributes
         return $date->shiftTimezone($timezone);
     }
 
-    protected function hasTimezone($value): bool
+    /**
+     * Check if the provided value contains timezone information
+     * 
+     * @param mixed $value 
+     * @return bool 
+     */
+    protected function hasTimezone(mixed $value): bool
     {
         return (is_string($value) && array_key_exists('zone', date_parse($value)))
             || (is_a($value, DateTime::class) && $value->getTimezone());
