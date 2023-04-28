@@ -161,3 +161,63 @@ test('a model with a timezone date cast can be json serialized', function () {
             'updated_at' => $date->toJSON()
         ]);
 });
+
+test('a model with a timezone date cast can parse ISO-formatted values properly', function () {
+    setupFacade();
+
+    Config::shouldReceive('get')
+        ->with('app.timezone')
+        ->andReturn('UTC');
+
+    $date = new Carbon('2022-12-15 09:00:00', 'UTC');
+    $model = fakeModelWithCast();
+
+    $model->test_at = $date->toIso8601String();
+    $model->updated_at = $date->toIso8601String();
+
+    expect($model->jsonSerialize())
+        ->toBe([
+            'test_at' => $date->toJSON(),
+            'updated_at' => $date->toJSON()
+        ]);
+});
+
+test('a model with a timezone date cast can parse datetime values properly', function () {
+    setupFacade();
+
+    Config::shouldReceive('get')
+        ->with('app.timezone')
+        ->andReturn('UTC');
+
+    $date = new DateTime('2022-12-15 09:00:00');
+    $model = fakeModelWithCast();
+
+    $model->test_at = $date;
+    $model->updated_at = $date;
+
+    expect($model->jsonSerialize())
+        ->toBe([
+            'test_at' => '2022-12-15T09:00:00.000000Z',
+            'updated_at' => '2022-12-15T09:00:00.000000Z'
+        ]);
+});
+
+test('a model with a timezone date cast can parse datetime values with a defined timezone properly', function () {
+    setupFacade();
+
+    Config::shouldReceive('get')
+        ->with('app.timezone')
+        ->andReturn('UTC');
+
+    $date = new DateTime('2022-12-15 09:00:00', new DateTimeZone('Asia/Taipei'));
+    $model = fakeModelWithCast();
+
+    $model->test_at = $date;
+    $model->updated_at = $date;
+
+    expect($model->jsonSerialize())
+        ->toBe([
+            'test_at' => '2022-12-15T01:00:00.000000Z',
+            'updated_at' => '2022-12-15T01:00:00.000000Z'
+        ]);
+});

@@ -4,6 +4,7 @@ use Whitecube\LaravelTimezones\Timezone;
 use Whitecube\LaravelTimezones\Facades\Timezone as Facade;
 use Illuminate\Database\Eloquent\Model;
 use Whitecube\LaravelTimezones\Casts\TimezonedDatetime;
+use Whitecube\LaravelTimezones\Concerns\HasTimezonedTimestamps;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,8 @@ function fakeModel()
 function fakeModelWithCast()
 {
     return new class() extends Model {
+        use HasTimezonedTimestamps;
+        
         protected $casts = [
             'test_at' => TimezonedDatetime::class,
             'created_at' => TimezonedDatetime::class,

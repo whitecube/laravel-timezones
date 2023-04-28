@@ -147,6 +147,21 @@ $model->published_at = Timezone::date($request->published_at);
 
 **This is not a bug**, it is intended behavior since one should be fully aware of the Carbon instance's timezone before assigning it.
 
+### Edge cases
+
+If you need to use the `TimezonedDatetime` or `ImmutableTimezonedDatetime` casts on the default timestamp columns (`created_at` and/or `updated_at`) AND you're expecting to handle dates with timezones other than UTC or the one you've defined with `Timezone::set()`, you will need to apply the `Whitecube\LaravelTimezones\Concerns\HasTimezonedTimestamps` trait on your model.
+
+This is necessary to prevent Laravel's casting of those attributes to occur, which would transform the value in a way where the timezone information is lost, preventing our cast from working properly.
+
+An example of a case where you need to use the trait:
+
+```php
+Timezone::set('Europe/Brussels');
+
+$model->created_at = new Carbon('2022-12-15 09:00:00', 'Asia/Taipei');
+```
+
+
 ## 🔥 Sponsorships 
 
 If you are reliant on this package in your production applications, consider [sponsoring us](https://github.com/sponsors/whitecube)! It is the best way to help us keep doing what we love to do: making great open source software.
