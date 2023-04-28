@@ -28,8 +28,17 @@ trait HasTimezonedTimestamps
      */
     protected function hasTimezonedDatetimeCast(string $key): bool
     {
-        $casts = $this->getCasts();
+        $cast = $this->getCasts()[$key] ?? null;
 
-        return array_key_exists($key, $casts) && $casts[$key] === TimezonedDatetime::class;
+        if (! $cast) {
+            return false;
+        }
+
+        $castClassName = explode(':', $cast)[0];
+
+        return in_array(
+            $castClassName, 
+            [TimezonedDatetime::class, ImmutableTimezonedDatetime::class]
+        );
     }
 }

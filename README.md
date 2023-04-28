@@ -149,7 +149,7 @@ $model->published_at = Timezone::date($request->published_at);
 
 ### Edge cases
 
-If you need to use the `TimezonedDatetime` cast on the timestamp columns (`created_at` and/or `updated_at`) AND you're expecting to handle dates with timezones other than UTC or the one you've defined with `Timezone::set()`, you will need to apply the `Whitecube\LaravelTimezones\Concerns\HasTimezonedTimestamps` trait on your model.
+If you need to use the `TimezonedDatetime` or `ImmutableTimezonedDatetime` casts on the default timestamp columns (`created_at` and/or `updated_at`) AND you're expecting to handle dates with timezones other than UTC or the one you've defined with `Timezone::set()`, you will need to apply the `Whitecube\LaravelTimezones\Concerns\HasTimezonedTimestamps` trait on your model.
 
 This is necessary to prevent Laravel's casting of those attributes to occur, which would transform the value in a way where the timezone information is lost, preventing our cast from working properly.
 
