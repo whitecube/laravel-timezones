@@ -3,6 +3,7 @@
 namespace Whitecube\LaravelTimezones\Concerns;
 
 use Whitecube\LaravelTimezones\Casts\TimezonedDatetime;
+use Whitecube\LaravelTimezones\Casts\ImmutableTimezonedDatetime;
 
 trait HasTimezonedTimestamps
 {
