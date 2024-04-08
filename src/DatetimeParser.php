@@ -4,6 +4,7 @@ namespace Whitecube\LaravelTimezones;
 
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 
 class DatetimeParser
 {
@@ -19,9 +20,9 @@ class DatetimeParser
      * 
      * @param mixed $value 
      * @param null|string $format 
-     * @return Carbon 
+     * @return Carbon|CarbonImmutable
      */
-    public function parse(mixed $value, ?string $format): Carbon
+    public function parse(mixed $value, ?string $format): Carbon|CarbonImmutable
     {
         $this->format = $format;
 
