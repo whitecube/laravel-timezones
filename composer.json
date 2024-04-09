@@ -38,7 +38,8 @@
         }
     },
     "require-dev": {
-        "pestphp/pest": "^1.22|^2.34"
+        "pestphp/pest": "^1.22|^2.34",
+        "mockery/mockery": "^1.6"
     },
     "config": {
         "allow-plugins": {
