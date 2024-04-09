@@ -19,7 +19,7 @@ class DatetimeParser
      * 
      * @param mixed $value 
      * @param null|string $format 
-     * @return CarbonInterace
+     * @return CarbonInterface
      */
     public function parse(mixed $value, ?string $format): CarbonInterface
     {
