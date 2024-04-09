@@ -5,9 +5,12 @@ namespace Whitecube\LaravelTimezones;
 use Carbon\CarbonTimeZone;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Traits\Macroable;
 
 class Timezone
 {
+    use Macroable;
+
     /**
      * The app's current display & manipulation timezone
      *
