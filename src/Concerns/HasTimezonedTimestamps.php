@@ -21,10 +21,10 @@ trait HasTimezonedTimestamps
     }
 
     /**
-     * Check if key is a timezoned datetime cast
-     * 
-     * @param string $key 
-     * @return bool 
+     * Check if key is a timezoned datetime cast.
+     *
+     * @param  string  $key
+     * @return bool
      */
     protected function hasTimezonedDatetimeCast(string $key): bool
     {
@@ -37,7 +37,7 @@ trait HasTimezonedTimestamps
         $castClassName = explode(':', $cast)[0];
 
         return in_array(
-            $castClassName, 
+            $castClassName,
             [TimezonedDatetime::class, ImmutableTimezonedDatetime::class]
         );
     }

@@ -10,15 +10,15 @@ class DatetimeParser
     use HasAttributes;
 
     /**
-     * The model's date storage format
+     * The model's date storage format.
      */
     protected ?string $format;
 
     /**
-     * Parse the value into a carbon instance
-     * 
-     * @param mixed $value 
-     * @param null|string $format 
+     * Parse the value into a carbon instance.
+     *
+     * @param  mixed  $value
+     * @param  null|string  $format
      * @return CarbonInterface
      */
     public function parse(mixed $value, ?string $format): CarbonInterface
@@ -27,7 +27,6 @@ class DatetimeParser
 
         return $this->asDateTime($value);
     }
-
 
     /**
      * Get the format for database stored dates.
