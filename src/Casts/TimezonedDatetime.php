@@ -5,6 +5,8 @@ namespace Whitecube\LaravelTimezones\Casts;
 use Whitecube\LaravelTimezones\Facades\Timezone;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Carbon\CarbonTimeZone;
 use DateTime;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
@@ -39,7 +41,7 @@ class TimezonedDatetime implements CastsAttributes
      * @param  array  $attributes
      * @return \Carbon\CarbonInterface
      */
-    public function get($model, $key, $value, $attributes)
+    public function get(Model $model, string $key, mixed $value, array $attributes)
     {
         if(!$value && $value !== 0) {
             return null;
@@ -63,7 +65,7 @@ class TimezonedDatetime implements CastsAttributes
      * @param  array  $attributes
      * @return string
      */
-    public function set($model, $key, $value, $attributes)
+    public function set(Model $model, string $key, mixed $value, array $attributes)
     {
         if(!$value && $value !== 0) {
             return null;
@@ -98,7 +100,7 @@ class TimezonedDatetime implements CastsAttributes
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Carbon\CarbonInterface
      */
-    public function asDateTime($value, $timezone, $model)
+    public function asDateTime(mixed $value, CarbonTimeZone $timezone, Model $model): CarbonInterface
     {
         $date = (new DatetimeParser)->parse($value, $this->format ?? $model->getDateFormat());
 

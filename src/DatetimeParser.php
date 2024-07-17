@@ -34,7 +34,7 @@ class DatetimeParser
      *
      * @return string
      */
-    public function getDateFormat()
+    public function getDateFormat(): ?string
     {
         return $this->format;
     }
