@@ -13,7 +13,7 @@ trait HasTimezonedTimestamps
      * @param  string  $key
      * @return bool
      */
-    protected function isDateAttribute($key)
+    protected function isDateAttribute($key): bool
     {
         return (in_array($key, $this->getDates(), true) ||
             $this->isDateCastable($key)) &&
