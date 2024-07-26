@@ -15,17 +15,12 @@ use Whitecube\LaravelTimezones\DatetimeParser;
 class TimezonedDatetime implements CastsAttributes
 {
     /**
-     * A developer-specific format to use for string parsing
-     *
-     * @var null|string
+     * A developer-specific format to use for string parsing.
      */
     protected ?string $format;
 
     /**
      * Create a new casting instance.
-     *
-     * @param null|string $format
-     * @return void
      */
     public function __construct(?string $format = null)
     {
@@ -35,10 +30,6 @@ class TimezonedDatetime implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
      * @return \Carbon\CarbonInterface
      */
     public function get(Model $model, string $key, mixed $value, array $attributes)
@@ -50,19 +41,15 @@ class TimezonedDatetime implements CastsAttributes
         if ($this->isTimestamp($model, $key)) {
             $value = Carbon::parse($value)->format($this->format ?? $model->getDateFormat());
         }
-        
+
         $original = Timezone::store($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
 
         return Timezone::date($original);
     }
- 
+
     /**
      * Prepare the given value for storage.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
      * @return string
      */
     public function set(Model $model, string $key, mixed $value, array $attributes)
@@ -81,24 +68,15 @@ class TimezonedDatetime implements CastsAttributes
     }
 
     /**
-     * Check if the given key is part of the model's known timestamps
-     * 
-     * @param Model $model 
-     * @param string $key 
-     * @return bool 
+     * Check if the given key is part of the model's known timestamps.
      */
     protected function isTimestamp(Model $model, string $key): bool
     {
         return $model->usesTimestamps() && in_array($key, $model->getDates());
     }
- 
+
     /**
-     * Create a new date value from raw material
-     *
-     * @param  mixed  $value
-     * @param  Carbon\CarbonTimeZone  $timezone
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return \Carbon\CarbonInterface
+     * Create a new date value from raw material.
      */
     public function asDateTime(mixed $value, CarbonTimeZone $timezone, Model $model): CarbonInterface
     {
@@ -112,15 +90,11 @@ class TimezonedDatetime implements CastsAttributes
     }
 
     /**
-     * Check if the provided value contains timezone information
-     * 
-     * @param mixed $value 
-     * @return bool 
+     * Check if the provided value contains timezone information.
      */
     protected function hasTimezone(mixed $value): bool
     {
         return (is_string($value) && array_key_exists('zone', date_parse($value)))
             || (is_a($value, DateTime::class) && $value->getTimezone());
     }
-
 }

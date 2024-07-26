@@ -2,18 +2,14 @@
 
 namespace Whitecube\LaravelTimezones\Casts;
 
+use Illuminate\Database\Eloquent\Model;
+
 class ImmutableTimezonedDatetime extends TimezonedDatetime
 {
     /**
      * Cast the given value.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
-     * @return array
      */
-    public function get($model, $key, $value, $attributes)
+    public function get(Model $model, string $key, mixed $value, array $attributes)
     {
         if($date = parent::get($model, $key, $value, $attributes)) {
             return $date->toImmutable();
