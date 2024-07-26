@@ -69,10 +69,6 @@ class TimezonedDatetime implements CastsAttributes
 
     /**
      * Check if the given key is part of the model's known timestamps.
-     *
-     * @param  Model  $model
-     * @param  string  $key
-     * @return bool
      */
     protected function isTimestamp(Model $model, string $key): bool
     {
@@ -81,11 +77,6 @@ class TimezonedDatetime implements CastsAttributes
 
     /**
      * Create a new date value from raw material.
-     *
-     * @param  mixed  $value
-     * @param  \Carbon\CarbonTimeZone  $timezone
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return \Carbon\CarbonInterface
      */
     public function asDateTime(mixed $value, CarbonTimeZone $timezone, Model $model): CarbonInterface
     {
@@ -100,9 +91,6 @@ class TimezonedDatetime implements CastsAttributes
 
     /**
      * Check if the provided value contains timezone information.
-     *
-     * @param  mixed  $value
-     * @return bool
      */
     protected function hasTimezone(mixed $value): bool
     {
