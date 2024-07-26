@@ -17,7 +17,7 @@ use Whitecube\LaravelTimezones\Concerns\HasTimezonedTimestamps;
 |
 */
 
-// uses(Tests\TestCase::class)->in('Feature');
+uses(\Whitecube\LaravelTimezones\Tests\TestCase::class)->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
