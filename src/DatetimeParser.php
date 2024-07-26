@@ -16,10 +16,6 @@ class DatetimeParser
 
     /**
      * Parse the value into a carbon instance.
-     *
-     * @param  mixed  $value
-     * @param  null|string  $format
-     * @return CarbonInterface
      */
     public function parse(mixed $value, ?string $format): CarbonInterface
     {
@@ -30,8 +26,6 @@ class DatetimeParser
 
     /**
      * Get the format for database stored dates.
-     *
-     * @return string
      */
     public function getDateFormat(): ?string
     {

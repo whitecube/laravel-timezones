@@ -9,11 +9,8 @@ trait HasTimezonedTimestamps
 {
     /**
      * Determine if the given attribute is a date or date castable.
-     *
-     * @param  string  $key
-     * @return bool
      */
-    protected function isDateAttribute($key): bool
+    protected function isDateAttribute(string $key): bool
     {
         return (in_array($key, $this->getDates(), true) ||
             $this->isDateCastable($key)) &&
@@ -22,9 +19,6 @@ trait HasTimezonedTimestamps
 
     /**
      * Check if key is a timezoned datetime cast.
-     *
-     * @param  string  $key
-     * @return bool
      */
     protected function hasTimezonedDatetimeCast(string $key): bool
     {

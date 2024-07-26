@@ -16,16 +16,11 @@ class TimezonedDatetime implements CastsAttributes
 {
     /**
      * A developer-specific format to use for string parsing.
-     *
-     * @var null|string
      */
     protected ?string $format;
 
     /**
      * Create a new casting instance.
-     *
-     * @param  null|string  $format
-     * @return void
      */
     public function __construct(?string $format = null)
     {
@@ -35,10 +30,6 @@ class TimezonedDatetime implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
      * @return \Carbon\CarbonInterface
      */
     public function get(Model $model, string $key, mixed $value, array $attributes)
@@ -59,10 +50,6 @@ class TimezonedDatetime implements CastsAttributes
     /**
      * Prepare the given value for storage.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
      * @return string
      */
     public function set(Model $model, string $key, mixed $value, array $attributes)
