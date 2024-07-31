@@ -16,8 +16,10 @@ class TimezonedDatetime implements CastsAttributes
 {
     /**
      * A developer-specific format to use for string parsing.
+     *
+     * @var null|string
      */
-    protected ?string $format;
+    protected $format;
 
     /**
      * Create a new casting instance.
@@ -30,9 +32,13 @@ class TimezonedDatetime implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @return \Carbon\CarbonInterface
+     * @param  Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
+     * @return CarbonInterface
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes)
+    public function get($model, string $key, $value, array $attributes)
     {
         if(!$value && $value !== 0) {
             return null;
@@ -42,7 +48,9 @@ class TimezonedDatetime implements CastsAttributes
             $value = Carbon::parse($value)->format($this->format ?? $model->getDateFormat());
         }
 
-        $original = Timezone::store($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
+        $original = Timezone::store($value, function ($raw, $tz) use ($model) {
+            return $this->asDateTime($raw, $tz, $model);
+        });
 
         return Timezone::date($original);
     }
@@ -50,9 +58,13 @@ class TimezonedDatetime implements CastsAttributes
     /**
      * Prepare the given value for storage.
      *
+     * @param  Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
      * @return string
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes)
+    public function set($model, string $key, $value, array $attributes)
     {
         if(!$value && $value !== 0) {
             return null;
@@ -62,7 +74,9 @@ class TimezonedDatetime implements CastsAttributes
             $value = Carbon::parse($value, Config::get('app.timezone'));
         }
 
-        $requested = Timezone::date($value, fn($raw, $tz) => $this->asDateTime($raw, $tz, $model));
+        $requested = Timezone::date($value, function ($raw, $tz) use ($model) {
+            return $this->asDateTime($raw, $tz, $model);
+        });
 
         return Timezone::store($requested)->format($this->format ?? $model->getDateFormat());
     }
@@ -77,8 +91,13 @@ class TimezonedDatetime implements CastsAttributes
 
     /**
      * Create a new date value from raw material.
+     *
+     * @param  mixed  $value
+     * @param  CarbonTimeZone  $timezone
+     * @param  Model  $model
+     * @return CarbonInterface
      */
-    public function asDateTime(mixed $value, CarbonTimeZone $timezone, Model $model): CarbonInterface
+    public function asDateTime($value, CarbonTimeZone $timezone, Model $model): CarbonInterface
     {
         $date = (new DatetimeParser)->parse($value, $this->format ?? $model->getDateFormat());
 
@@ -91,8 +110,11 @@ class TimezonedDatetime implements CastsAttributes
 
     /**
      * Check if the provided value contains timezone information.
+     *
+     * @param  mixed  $value
+     * @return bool
      */
-    protected function hasTimezone(mixed $value): bool
+    protected function hasTimezone($value): bool
     {
         return (is_string($value) && array_key_exists('zone', date_parse($value)))
             || (is_a($value, DateTime::class) && $value->getTimezone());

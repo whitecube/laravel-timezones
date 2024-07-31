@@ -11,13 +11,19 @@ class DatetimeParser
 
     /**
      * The model's date storage format.
+     *
+     * @var null|string
      */
-    protected ?string $format;
+    protected $format;
 
     /**
      * Parse the value into a carbon instance.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $format
+     * @return CarbonInterface
      */
-    public function parse(mixed $value, ?string $format): CarbonInterface
+    public function parse($value, ?string $format): CarbonInterface
     {
         $this->format = $format;
 
