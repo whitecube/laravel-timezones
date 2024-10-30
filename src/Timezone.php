@@ -23,8 +23,12 @@ class Timezone
     /**
      * Create a new singleton instance.
      */
-    public function __construct(string $default)
+    public function __construct(string $default = '')
     {
+        if (empty($default)) {
+            $default = config('app.timezone');
+        }
+
         $this->setStorage($default);
         $this->setCurrent($default);
     }
