@@ -30,8 +30,12 @@ class Timezone
      *
      * @throws \Exception
      */
-    public function __construct(string $default)
+    public function __construct(string $default = '')
     {
+        if (empty($default)) {
+            $default = config('app.timezone');
+        }
+
         $this->setStorage($default);
         $this->setCurrent($default);
     }
