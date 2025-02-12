@@ -86,7 +86,7 @@ class Timezone
     /**
      * Configure given date for the application's current timezone.
      */
-    public function date(mixed $value, callable $maker = null): CarbonInterface
+    public function date(mixed $value, ?callable $maker = null): CarbonInterface
     {
         return $this->makeDateWithCurrent($value, $maker);
     }
@@ -94,7 +94,7 @@ class Timezone
     /**
      * Configure given date for the database storage timezone.
      */
-    public function store(mixed $value, callable $maker = null): CarbonInterface
+    public function store(mixed $value, ?callable $maker = null): CarbonInterface
     {
         return $this->makeDateWithStorage($value, $maker);
     }
@@ -118,7 +118,7 @@ class Timezone
     /**
      * Create or configure date using the application's current timezone.
      */
-    protected function makeDateWithCurrent(mixed $value, callable $maker = null): CarbonInterface
+    protected function makeDateWithCurrent(mixed $value, ?callable $maker = null): CarbonInterface
     {
         return is_a($value, CarbonInterface::class)
             ? $this->convertToCurrent($value)
@@ -128,7 +128,7 @@ class Timezone
     /**
      * Create or configure date using the database's storage timezone.
      */
-    protected function makeDateWithStorage(mixed $value, callable $maker = null): CarbonInterface
+    protected function makeDateWithStorage(mixed $value, ?callable $maker = null): CarbonInterface
     {
         return is_a($value, CarbonInterface::class)
             ? $this->convertToStorage($value)
@@ -138,7 +138,7 @@ class Timezone
     /**
      * Create a date using the provided timezone.
      */
-    protected function makeDate(mixed $value, CarbonTimeZone $timezone, callable $maker = null): CarbonInterface
+    protected function makeDate(mixed $value, CarbonTimeZone $timezone, ?callable $maker = null): CarbonInterface
     {
         return ($maker)
             ? call_user_func($maker, $value, $timezone)
