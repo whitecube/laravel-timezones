@@ -34,7 +34,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^2.34|^3.7"
+        "pestphp/pest": "^2.34|^3.7|^4.4"
     },
     "extra": {
         "laravel": {
